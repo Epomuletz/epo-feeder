@@ -3,8 +3,10 @@ package ro.feedershop.inventar;
 import org.apache.commons.io.FileUtils;
 import ro.feedershop.inventar.beans.Factura;
 import ro.feedershop.inventar.services.FacturaService;
+import ro.feedershop.inventar.services.InventarService;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -36,6 +38,7 @@ public class GenerareInventar {
      */
     public void procesareFacturi() {
         String path = "D:\\fs-workspace\\epo-feeder\\ptInventar\\2014";
+        String numeInv = "Inventar2014";
         String exceptieNume = "Feeder";
         String exceptieNume2 = "Centralizator";
 
@@ -50,7 +53,12 @@ public class GenerareInventar {
             }
         }
         //scriu in fis de inventar
-
+        InventarService inventarService = new InventarService();
+        try {
+            inventarService.createExcel(path, numeInv, facturi);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
 
