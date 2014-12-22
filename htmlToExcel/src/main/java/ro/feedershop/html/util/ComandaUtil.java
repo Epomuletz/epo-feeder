@@ -4,7 +4,7 @@ import ro.feedershop.html.beans.Adresa;
 import ro.feedershop.html.beans.Client;
 import ro.feedershop.html.beans.Comanda;
 import ro.feedershop.html.beans.Produs;
-import ro.feedershop.html.builders.Constante;
+import ro.feedershop.utile.StringUtil;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -49,14 +49,7 @@ public class ComandaUtil {
         return Double.valueOf(sumStr);
     }
 
-    public static List<String> getListFromStringTokenizer(StringTokenizer st) {
-        List<String> produse = new ArrayList<String>();
-        int i = 0;
-        while (st.hasMoreElements()) {
-            produse.add(i++, st.nextToken());
-        }
-        return produse;
-    }
+
 
     private static String formatPret(String pret) {
         pret = pret.replace("RON", "");
@@ -98,7 +91,7 @@ public class ComandaUtil {
         String denumire = produs.getNume();
         if (denumire.length() > MAX_LEN) {
             StringTokenizer st = new StringTokenizer(denumire, " ");
-            List<String> denList = getListFromStringTokenizer(st);
+            List<String> denList = StringUtil.getListFromStringTokenizer(st);
             StringBuilder builder = new StringBuilder();
             StringBuilder builder2 = new StringBuilder();
             boolean isFirst = true;
@@ -136,7 +129,7 @@ public class ComandaUtil {
         String produseStr = copied.substring(index1, index2);
         StringTokenizer st = new StringTokenizer(produseStr, "\n");
 
-        List<String> prods = getListFromStringTokenizer(st);
+        List<String> prods = StringUtil.getListFromStringTokenizer(st);
 
         int count = 1;
         while (count < prods.size()) {
@@ -176,7 +169,7 @@ public class ComandaUtil {
         String adrLin = adresaObj.getLinia1();
         if (adrLin.length() > MAX_LEN) {
             StringTokenizer st = new StringTokenizer(adrLin, " ");
-            List<String> denList = getListFromStringTokenizer(st);
+            List<String> denList = StringUtil.getListFromStringTokenizer(st);
             StringBuilder builder = new StringBuilder();
             StringBuilder builder2 = new StringBuilder();
             boolean isFirst = true;

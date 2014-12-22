@@ -1,9 +1,23 @@
-package ro.feedershop.html.util;
+package ro.feedershop.utile;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.StringTokenizer;
 
 /**
- * Created by nevastuica on 7/27/2014.
+ * Created by nevastuica on 12/22/2014.
  */
 public class StringUtil {
+
+
+    public static List<String> getListFromStringTokenizer(StringTokenizer st) {
+        List<String> produse = new ArrayList<String>();
+        int i = 0;
+        while (st.hasMoreElements()) {
+            produse.add(i++, st.nextToken());
+        }
+        return produse;
+    }
 
 
     public static int nrOccurences(String str, String toFind) {

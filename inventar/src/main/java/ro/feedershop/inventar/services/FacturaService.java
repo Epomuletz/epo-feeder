@@ -5,6 +5,8 @@ import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.xssf.usermodel.*;
 import ro.feedershop.inventar.beans.Factura;
+import ro.feedershop.utile.Constante;
+import ro.feedershop.utile.StringUtil;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -59,9 +61,6 @@ public class FacturaService {
         Map<String, String> produseCumparate = new HashMap<String, String>();
 
         //repere
-        String codProdus = "Cod Produs";
-        String cantitate = "Cantitate";
-        String intocmit = "Intocmit de";
         int repere = 0;
         int codProdCol = 0;
         int cantCol = 0;
@@ -71,7 +70,6 @@ public class FacturaService {
         int pereche = 0;
 
         int rowsCount = sheet.getLastRowNum();
-        System.out.println("Total Number of Rows: " + (rowsCount + 1));
         for (int i = 0; i <= rowsCount; i++) {
             if(repere == 3){
                 break;
@@ -79,7 +77,6 @@ public class FacturaService {
             Row row = sheet.getRow(i);
             if (row != null) {
                 int colCounts = row.getLastCellNum();
-                System.out.println("Total Number of Cols: " + colCounts);
                 for (int j = 0; j < colCounts; j++) {
                     if(repere == 3){
                         break;
@@ -89,13 +86,13 @@ public class FacturaService {
                         switch (cell.getCellType()) {
                             case Cell.CELL_TYPE_STRING: {
                                 String val = cell.getStringCellValue();
-                                if (val.contains(codProdus)) {
+                                if (val.contains(Constante.COD)) {
                                     codProdCol = j;
                                     repere++;
-                                } else if (val.contains(cantitate)) {
+                                } else if (val.contains(Constante.CANTITATE)) {
                                     cantCol = j;
                                     repere++;
-                                } else if (val.contains(intocmit)) {
+                                } else if (val.contains(Constante.INTOCMIT)) {
                                     codProdCol = j;
                                     repere++;
                                 } else if (repere == 2 && j == codProdCol) {
@@ -129,7 +126,7 @@ public class FacturaService {
         System.out.println("FileName:  " + fileName);
 
         StringTokenizer st = new StringTokenizer(fileName, "_");
-        List<String> info = getListFromStringTokenizer(st);
+        List<String> info = StringUtil.getListFromStringTokenizer(st);
         Factura factura = new Factura();
         factura.setCodFactura(info.get(1));
         factura.setDataFactura(info.get(2));
@@ -138,16 +135,6 @@ public class FacturaService {
         factura.setNumeClient(numeClient);
         return factura;
     }
-
-    List<String> getListFromStringTokenizer(StringTokenizer st) {
-        List<String> elem = new ArrayList<String>();
-        int i = 0;
-        while (st.hasMoreElements()) {
-            elem.add(i++, st.nextToken());
-        }
-        return elem;
-    }
-
 
     /**
      * Extrag data facturii din shape-ul central al fact proforme
