@@ -2,11 +2,10 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <groupId>ro.feedershop</groupId>
-    <artifactId>inventar</artifactId>
+    <artifactId>utils</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <packaging>jar</packaging>
-    <name>Inventar</name>
-    <description>Facturi to Inventar</description>
+    <name>Modul Utilitar</name>
 
     <parent>
         <groupId>ro.feedershop</groupId>
@@ -15,16 +14,8 @@
     </parent>
 
     <build>
-        <finalName>inventar</finalName>
+        <finalName>utils</finalName>
     </build>
 
-    <dependencies>
-        <dependency>
-            <groupId>ro.feedershop</groupId>
-            <artifactId>utils</artifactId>
-            <version>0.0.1-SNAPSHOT</version>
-        </dependency>
-
-    </dependencies>
 
 </project>

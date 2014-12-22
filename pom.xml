@@ -11,6 +11,7 @@
     <modules>
         <module>htmlToExcel</module>
         <module>inventar</module>
+        <module>utils</module>
     </modules>
 
 
