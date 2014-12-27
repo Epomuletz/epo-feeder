@@ -43,7 +43,8 @@ public class FacturaService {
             e.printStackTrace();
         } catch (POIXMLException e) {
             //TODO: add in raport exceptii
-            e.printStackTrace();
+            System.out.println("Fisierul " + fisFact.getName() + " nu poate fi deschis");
+//            e.printStackTrace();
         }
 
         return factura;
@@ -59,6 +60,7 @@ public class FacturaService {
      */
     Factura getProductMap(Factura factura, XSSFSheet sheet) {
         Map<String, String> produseCumparate = new HashMap<String, String>();
+        List<String> repereList = new ArrayList<String>();
 
         //repere
         int repere = 0;
@@ -87,11 +89,18 @@ public class FacturaService {
                             case Cell.CELL_TYPE_STRING: {
                                 String val = cell.getStringCellValue();
                                 if (val.contains(Constante.COD)) {
+                                    if(!repereList.contains(val)){
+                                        repereList.add(val);
+                                        repere++;
+                                    }
                                     codProdCol = j;
-                                    repere++;
+
                                 } else if (val.contains(Constante.CANTITATE)) {
+                                    if(!repereList.contains(val)){
+                                        repereList.add(val);
+                                        repere++;
+                                    }
                                     cantCol = j;
-                                    repere++;
                                 } else if (val.contains(Constante.INTOCMIT)) {
                                     codProdCol = j;
                                     repere++;
@@ -100,6 +109,17 @@ public class FacturaService {
                                     pereche++;
                                 } else if (repere == 2 && j == cantCol) {
                                     cantVal = val;
+                                    pereche++;
+                                }
+                                break;
+                            }
+                            case Cell.CELL_TYPE_NUMERIC:{
+                                double val = cell.getNumericCellValue();
+                                if (repere == 2 && j == codProdCol) {
+                                    produsKey = "" + val;
+                                    pereche++;
+                                } else if (repere == 2 && j == cantCol) {
+                                    cantVal = "" + val;
                                     pereche++;
                                 }
                             }
@@ -131,7 +151,13 @@ public class FacturaService {
         factura.setCodFactura(info.get(1));
         factura.setDataFactura(info.get(2));
         String numeClient = info.get(3);
-        numeClient = numeClient.substring(0, numeClient.indexOf("."));
+        try{
+            numeClient = numeClient.substring(0, numeClient.indexOf("."));
+        }
+        catch (StringIndexOutOfBoundsException e){
+            System.out.println("Nume client prost format: " + numeClient);
+        }
+
         factura.setNumeClient(numeClient);
         return factura;
     }

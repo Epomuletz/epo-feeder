@@ -9,7 +9,7 @@ import ro.feedershop.html.beans.Client;
 import ro.feedershop.html.beans.Comanda;
 import ro.feedershop.html.beans.Produs;
 
-import ro.feedershop.html.util.ExcelUtil;
+import ro.feedershop.utile.ExcelUtil;
 import ro.feedershop.utile.Constante;
 import ro.feedershop.utile.FileUtil;
 
@@ -45,7 +45,7 @@ public class InvoiceBuilder {
         ExcelUtil.drawVLine(sheet, TOP_ROW, BOT_ROW, START + 10);
         ExcelUtil.drawVLine(sheet, TOP_ROW, BOT_ROW, RIGHT_MARGIN);
 
-//        first header row
+//      //first header row
         Row row1 = sheet.createRow(TOP_ROW);
         Cell cell1 = row1.createCell(START + 8);
         ExcelUtil.setCellValueAndStyle(cell1, Constante.PRET, boldStyle);

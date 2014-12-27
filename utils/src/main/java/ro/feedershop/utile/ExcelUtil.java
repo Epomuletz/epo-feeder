@@ -1,16 +1,7 @@
-package ro.feedershop.html.util;
+package ro.feedershop.utile;
 
 import org.apache.poi.ss.usermodel.*;
-import org.apache.poi.util.IOUtils;
 import org.apache.poi.xssf.usermodel.*;
-import ro.feedershop.html.beans.Adresa;
-import ro.feedershop.html.beans.Client;
-import ro.feedershop.html.beans.Comanda;
-import ro.feedershop.html.beans.Produs;
-
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.List;
 
 /**
  * @author <a href="mailto:elena.banu@endava.com">Elena Banu</a>
