@@ -42,8 +42,7 @@ public class FacturaService {
         } catch (IOException e) {
             e.printStackTrace();
         } catch (POIXMLException e) {
-            //TODO: add in raport exceptii
-            System.out.println("Fisierul " + fisFact.getName() + " nu poate fi deschis");
+            RaportService.scrieInRaport("Fisierul " + fisFact.getName() + " nu poate fi deschis");
 //            e.printStackTrace();
         }
 
@@ -54,8 +53,9 @@ public class FacturaService {
     /**
      * Construiesc map-ul <codProdus, cantitate> din factura excel.
      * Repere: Coloanele 'Cod Produs' si 'Cantitate' si randul cu 'Intocmit de'
+     *
      * @param factura - obiectul in care va fi stocat map-ul
-     * @param sheet - sheetul de excel cu factura fiscala
+     * @param sheet   - sheetul de excel cu factura fiscala
      * @return
      */
     Factura getProductMap(Factura factura, XSSFSheet sheet) {
@@ -73,14 +73,14 @@ public class FacturaService {
 
         int rowsCount = sheet.getLastRowNum();
         for (int i = 0; i <= rowsCount; i++) {
-            if(repere == 3){
+            if (repere == 3) {
                 break;
             }
             Row row = sheet.getRow(i);
             if (row != null) {
                 int colCounts = row.getLastCellNum();
                 for (int j = 0; j < colCounts; j++) {
-                    if(repere == 3){
+                    if (repere == 3) {
                         break;
                     }
                     Cell cell = row.getCell(j);
@@ -89,14 +89,14 @@ public class FacturaService {
                             case Cell.CELL_TYPE_STRING: {
                                 String val = cell.getStringCellValue();
                                 if (val.contains(Constante.COD)) {
-                                    if(!repereList.contains(val)){
+                                    if (!repereList.contains(val)) {
                                         repereList.add(val);
                                         repere++;
                                     }
                                     codProdCol = j;
 
                                 } else if (val.contains(Constante.CANTITATE)) {
-                                    if(!repereList.contains(val)){
+                                    if (!repereList.contains(val)) {
                                         repereList.add(val);
                                         repere++;
                                     }
@@ -113,7 +113,7 @@ public class FacturaService {
                                 }
                                 break;
                             }
-                            case Cell.CELL_TYPE_NUMERIC:{
+                            case Cell.CELL_TYPE_NUMERIC: {
                                 double val = cell.getNumericCellValue();
                                 if (repere == 2 && j == codProdCol) {
                                     produsKey = "" + val;
@@ -143,19 +143,34 @@ public class FacturaService {
      */
     Factura extragInfoFactura(File factFile) {
         String fileName = factFile.getName();
-        System.out.println("FileName:  " + fileName);
+        RaportService.scrieInRaport("FileName:  " + fileName);
 
         StringTokenizer st = new StringTokenizer(fileName, "_");
         List<String> info = StringUtil.getListFromStringTokenizer(st);
         Factura factura = new Factura();
-        factura.setCodFactura(info.get(1));
-        factura.setDataFactura(info.get(2));
-        String numeClient = info.get(3);
-        try{
+        String numeClient = "";
+        int i = 4;
+        try {
+            factura.setCodFactura(info.get(1));
+            factura.setDataFactura(info.get(2));
+            numeClient = info.get(3);
+
             numeClient = numeClient.substring(0, numeClient.indexOf("."));
-        }
-        catch (StringIndexOutOfBoundsException e){
-            System.out.println("Nume client prost format: " + numeClient);
+
+        } catch (StringIndexOutOfBoundsException e) {
+            RaportService.scrieInRaport("Nume client prost format: " + numeClient);
+            String nume = info.get(i);
+            while(nume.indexOf(".") == -1)
+            {
+                numeClient += nume;
+                i++;
+                nume = info.get(i);
+            }
+            numeClient += nume.substring(0, nume.indexOf("."));
+            RaportService.scrieInRaport("Dupa corectie: " + numeClient);
+
+        } catch (IndexOutOfBoundsException ioobe) {
+            RaportService.scrieInRaport("Numele facturii nu poate fi tokenizat: " + fileName);
         }
 
         factura.setNumeClient(numeClient);

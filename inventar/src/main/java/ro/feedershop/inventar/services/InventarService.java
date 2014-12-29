@@ -65,7 +65,7 @@ public class InventarService {
 
         if(produse != null) {
             Iterator it = produse.entrySet().iterator();
-            System.out.println("**************" + factura.getCodFactura() + "*****************");
+            RaportService.scrieInRaport("**************" + factura.getCodFactura() + "*****************");
             while (it.hasNext()) {
                 Map.Entry pairs = (Map.Entry) it.next();
                 String codProdus = pairs.getKey().toString();
@@ -85,13 +85,13 @@ public class InventarService {
                     prodPosition.put(codProdus, new Integer(rowNum));
                     rowNum++;
                 }
-                System.out.println(pairs.getKey() + " = " + pairs.getValue());
+                RaportService.scrieInRaport(pairs.getKey() + " = " + pairs.getValue());
                 it.remove(); // avoids a ConcurrentModificationException
             }
         }
         else
         {
-            System.out.println("**************" + factura.getCodFactura() + "*********nulllll********");
+            RaportService.scrieInRaport("**************" + factura.getCodFactura() + "*********nulllll********");
         }
 
     }
