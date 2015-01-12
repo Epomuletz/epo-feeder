@@ -229,14 +229,15 @@ public class InvoiceBuilder {
         Cell cell4 = row3.createCell(COL2);
         ExcelUtil.setCellValueAndStyle(cell4, Constante.TAXA_CURIER, style2);
         Cell cell41 = row3.createCell(COL2 + 4);
-        ExcelUtil.setCellValueAndStyle(cell41, "0", boldStyle);
+        ExcelUtil.setCellValueAndStyle(cell41, comanda.getLivrareManipulare().toString(), boldStyle);
         row3.setHeight((short) 700);
 
         Row row4 = sheet.createRow(startRow + 4);
         Cell cell5 = row4.createCell(COL2);
         ExcelUtil.setCellValueAndStyle(cell5, Constante.TOTAL_FINAL, boldStyle);
         Cell cell51 = row4.createCell(COL2 + 4);
-        ExcelUtil.setCellValueAndStyle(cell51, comanda.getPretTotal().toString(), boldStyle);
+        Double pretTotal = comanda.getPretTotal() + comanda.getLivrareManipulare();
+        ExcelUtil.setCellValueAndStyle(cell51, pretTotal.toString(), boldStyle);
 
         Row row5 = sheet.createRow(startRow + 5);
         Cell cell6 = row5.createCell(COL2);

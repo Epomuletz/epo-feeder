@@ -13,6 +13,8 @@ public class ConstanteUtil {
     static final String INFO_PLATA = "Informaţii plată";
     static final String PROD_START = "Rând total";
     static final String PROD_END = "Istoric comentarii";
+    static final String RAMBURS_START = "Livrare şi manipulare";
+    static final String RAMBURS_END = "Magento™ is a trademark of Magento Inc.";
     static final String COMANDA_START = "Comanda #";
     static final String COMANDA_END = "Cumpărat de la";
     static final String COD_INTERN = "Cod intern produs:";

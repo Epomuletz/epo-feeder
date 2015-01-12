@@ -4,6 +4,7 @@ import ro.feedershop.html.beans.Comanda;
 import ro.feedershop.html.builders.InvoiceBuilder;
 import ro.feedershop.html.util.ComandaUtil;
 
+import javax.swing.*;
 import java.awt.*;
 import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.UnsupportedFlavorException;
@@ -32,26 +33,38 @@ public class GenerareFactura {
     }
 
     private static String getNumeExcel(Comanda comanda) {
-        String numeFactura = "Factura_FS000xx_";
+        String numeFactura = "Factura_FS00xxx_";
         String data = comanda.getDataComanda();
         String numeClient = comanda.getClient().getNumeComplet();
         numeFactura = numeFactura + data + "_" + numeClient.replace(" ", "");
         return numeFactura;
     }
 
-    public static String creareFactura(String copied) {
+    public static String creareFactura(String copied, String path) {
         Comanda comanda = ComandaUtil.populareComanda(copied);
+        String numeExcel = getNumeExcel(comanda);
 
-//        String path = "D:\\fs-workspace\\epo-feeder\\testeFacturi\\";
-//        path claude
-        String path = "D:\\C. facturi clienti\\2014";
         try {
-            String numeExcel = getNumeExcel(comanda);
+
             InvoiceBuilder invoiceBuilder = new InvoiceBuilder();
             invoiceBuilder.createExcel(path, numeExcel, comanda);
         } catch (IOException e) {
             e.printStackTrace();
         }
+        return numeExcel;
+    }
+
+    private static String colectarePathFolderFacturi(){
+        JFrame frame = null;
+        String path = (String) JOptionPane.showInputDialog(
+                frame,
+                "Va rugam sa introduceti calea completa catre directorul unde doriti stocarea facturii:\n"
+                        + "C:\\DirectorFacturi",
+                "Input Factura Path",
+                JOptionPane.PLAIN_MESSAGE,
+                null,
+                null,
+                "D:\\C. facturi clienti\\2015");
         return path;
     }
 
@@ -73,12 +86,15 @@ public class GenerareFactura {
         });
         f.setTitle("FeederShop - Generare Facturi - Buna Schmupex!");
         try {
-            String path = creareFactura(data);
-            f.add(new Label("Factura a fost generata cu succes! \n O poti verifica la " + path));
-            f.setSize(800, 300);
+            String path = colectarePathFolderFacturi();
+//            String path = "D:\\fs-workspace\\epo-feeder\\testeFacturi\\";
+            String numeFact = creareFactura(data, path);
+            f.add(new Label("Factura cu numele <<"+numeFact+">> a fost generata cu succes! \r\n " +
+                    "O poti verifica la "+ path, Label.CENTER));
+            f.setSize(900, 300);
             f.setVisible(true);
         } catch (Exception ex) {
-            f.add(new Label("Error:  " + ex.getMessage()));
+            f.add(new Label("Error:  " + ex.getStackTrace()));
             f.setSize(500, 500);
             f.setVisible(true);
         }

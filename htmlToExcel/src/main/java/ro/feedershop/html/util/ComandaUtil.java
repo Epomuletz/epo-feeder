@@ -17,8 +17,7 @@ import java.util.StringTokenizer;
  */
 public class ComandaUtil {
 
-    public static Comanda populareComanda(String copied)
-    {
+    public static Comanda populareComanda(String copied) {
         int index1 = copied.indexOf(ConstanteUtil.COMANDA_START);
         int index2 = copied.indexOf(ConstanteUtil.COMANDA_END);
         String comanda = copied.substring(index1, index2);
@@ -33,6 +32,7 @@ public class ComandaUtil {
         comandaObj.setClient(getClient(copied));
         comandaObj.setProduseComandate(populareProduse(copied));
         comandaObj.setPretTotal(calculateTotal(comandaObj));
+        comandaObj.setLivrareManipulare(extractRamburs(copied));
         return comandaObj;
     }
 
@@ -48,7 +48,6 @@ public class ComandaUtil {
 
         return Double.valueOf(sumStr);
     }
-
 
 
     private static String formatPret(String pret) {
@@ -119,7 +118,20 @@ public class ComandaUtil {
         return produs;
     }
 
-
+    public static Double extractRamburs(String copied){
+        int index1 = copied.indexOf(ConstanteUtil.RAMBURS_START);
+        int index2 = copied.lastIndexOf(ConstanteUtil.RAMBURS_END);
+        String rambursStr = copied.substring(index1, index2);
+        StringTokenizer st = new StringTokenizer(rambursStr, "\n");
+        rambursStr = st.nextToken();
+        StringTokenizer st2 = new StringTokenizer(rambursStr, "\t");
+        st2.nextToken();
+        rambursStr = st2.nextToken();
+        StringTokenizer st3 = new StringTokenizer(rambursStr, " ");
+        rambursStr = st3.nextToken();
+        rambursStr = rambursStr.replace(",", ".");
+        return new Double(rambursStr);
+    }
 
     public static List<Produs> populareProduse(String copied) {
         List<Produs> produse = new ArrayList<Produs>();

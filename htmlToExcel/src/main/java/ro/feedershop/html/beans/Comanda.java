@@ -16,6 +16,15 @@ public class Comanda {
     Client client;
     List<Produs> produseComandate;
     Double pretTotal;
+    Double livrareManipulare;
+
+    public Double getLivrareManipulare() {
+        return livrareManipulare;
+    }
+
+    public void setLivrareManipulare(Double livrareManipulare) {
+        this.livrareManipulare = livrareManipulare;
+    }
 
     public Double getPretTotal() {
         return pretTotal;
@@ -35,7 +44,13 @@ public class Comanda {
 
     public String getDataComanda() {
         StringTokenizer st = new StringTokenizer(dataComanda, " ");
-        return st.nextToken();
+        int count = 0;
+        String data = "";
+        while(st.hasMoreTokens() && count < 3){
+            data += st.nextToken();
+            count++;
+        }
+        return data;
     }
 
     public void setDataComanda(String dataComanda) {
