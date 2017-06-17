@@ -15,7 +15,7 @@ import java.io.IOException;
 import java.util.*;
 
 /**
- * Service care va genera fisieul de inventar pe baza Listei de facturi.
+ * Service care va genera fisierul de inventar pe baza Listei de facturi.
  * Pt fiecare factura din lista:
  * 1. se verifica daca exista codul de produs in lista de coduri de produse.
  * <p/>
@@ -27,6 +27,7 @@ public class InventarService {
     final int ROW_COD_FACT = 1;
     final int ROW_DATA_FACT = 2;
     final int COL_COD_PRODUS = 0;
+    final int COL_SUMA_CANT_PRODUS = 1;
     List<String> codProduse = new ArrayList<String>();
     Map<String, Integer> prodPosition = new HashMap<String, Integer>();
     int rowNum = 3; //row that hasn't a prodCode in it yet
@@ -41,14 +42,22 @@ public class InventarService {
         Row rowCod = sheet.createRow(ROW_COD_FACT);
         Row rowData = sheet.createRow(ROW_DATA_FACT);
 
-        int currentCol = 1;
+        int currentCol = 2;
+        //creare header total cantitate
+        CellStyle boldStyle = ExcelUtil.getDefaultStyle(workbook);
+        boldStyle.setFont(ExcelUtil.getDefaultFont(workbook, true, 8));
+        Cell celTotal = rowNume.createCell(COL_SUMA_CANT_PRODUS);
+        ExcelUtil.setCellValueAndStyle(celTotal, "Total ", boldStyle);
+        Cell celCant = rowCod.createCell(COL_SUMA_CANT_PRODUS);
+        ExcelUtil.setCellValueAndStyle(celCant, "Cantitate ", boldStyle);
+        Cell celProdus = rowData.createCell(COL_SUMA_CANT_PRODUS);
+        ExcelUtil.setCellValueAndStyle(celProdus, "Produs", boldStyle);
 
         for (Factura factura : facturi) {
             if (factura != null) {
                 writeFactHeader(factura, workbook, currentCol, rowNume, rowCod, rowData);
                 writeProductContent(factura, workbook, currentCol);
             }
-
             currentCol++;
         }
 
@@ -59,7 +68,8 @@ public class InventarService {
     public void writeProductContent(Factura factura, XSSFWorkbook workbook, int colNum) {
         Map produse = factura.getProduseCumparate();
         XSSFSheet sheet = workbook.getSheet(Constante.SHEET_INVENTAR);
-        CellStyle style = ExcelUtil.getDefaultStyle(workbook);
+//        CellStyle style = ExcelUtil.getDefaultStyle(workbook);
+        CellStyle numStyle = ExcelUtil.getCenterStyle(workbook);
         CellStyle boldStyle = ExcelUtil.getDefaultStyle(workbook);
         boldStyle.setFont(ExcelUtil.getDefaultFont(workbook, true, 8));
 
@@ -74,13 +84,25 @@ public class InventarService {
                     int rowNr = prodPosition.get(codProdus);
                     Row currentRow = sheet.getRow(rowNr);
                     Cell cantCell = currentRow.createCell(colNum);
-                    ExcelUtil.setCellValueAndStyle(cantCell, pairs.getValue().toString(), style);
+                    double cantitate = Double.parseDouble(pairs.getValue().toString());
+//                    System.out.println("label:" + pairs.getKey() + " - value: " + pairs.getValue().toString() + "|");
+                    ExcelUtil.setCellNumericValueAndStyle(cantCell, cantitate, numStyle);
+                    Cell totalCell = currentRow.getCell(COL_SUMA_CANT_PRODUS);
+                    double totalExistent = totalCell.getNumericCellValue();
+                    ExcelUtil.setCellNumericValueAndStyle(totalCell, totalExistent + cantitate, numStyle);
+
+
                 } else {
+                    //creez rand nou
                     Row currentRow = sheet.createRow(rowNum);
                     Cell prodCell = currentRow.createCell(COL_COD_PRODUS);
                     ExcelUtil.setCellValueAndStyle(prodCell, codProdus, boldStyle);
                     Cell cantCell = currentRow.createCell(colNum);
-                    ExcelUtil.setCellValueAndStyle(cantCell, pairs.getValue().toString(), style);
+//                    System.out.println("label:" + pairs.getKey() + " - value: " + pairs.getValue() + "|");
+                    double cantitate = Double.parseDouble(pairs.getValue().toString());
+                    ExcelUtil.setCellNumericValueAndStyle(cantCell,cantitate , numStyle);
+                    Cell totalCell = currentRow.createCell(COL_SUMA_CANT_PRODUS);
+                    ExcelUtil.setCellNumericValueAndStyle(totalCell, cantitate, numStyle);
                     codProduse.add(codProdus);
                     prodPosition.put(codProdus, new Integer(rowNum));
                     rowNum++;

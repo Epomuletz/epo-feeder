@@ -122,6 +122,7 @@ public class FacturaService {
                                     cantVal = "" + val;
                                     pereche++;
                                 }
+                                break;
                             }
                             default:
                         }//end switch

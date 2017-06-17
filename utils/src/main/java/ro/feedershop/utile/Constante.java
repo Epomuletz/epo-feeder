@@ -28,7 +28,7 @@ public class Constante {
     public static final String EXTENSION = ".xlsx";
     public static final String PATH = "D:\\03.Elena\\FeederShop\\epo-feeder\\testeFacturi\\";
     public static final String TITLE = "FACTURA FISCALA";
-    public static final String SERIE_NUMAR = "Seria: FS  Numar: 000xx";
+    public static final String SERIE_NUMAR = "Seria: FS  Numar: 0xxxx";
     public static final String DATA = "Data:";
 
 //    tabela produse

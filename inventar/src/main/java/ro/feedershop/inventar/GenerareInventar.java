@@ -33,7 +33,7 @@ public class GenerareInventar {
                 JOptionPane.PLAIN_MESSAGE,
                 null,
                 null,
-                "D:\\fs-workspace\\epo-feeder\\ptInventar\\2014");
+                "F:\\fs-workspace\\epo-feeder\\ptInventar\\2014");
         RaportService.scrieInRaport("Userul a introdus folderul: " + path);
         return path;
     }
